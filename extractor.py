@@ -7,7 +7,7 @@ rootdir = './genres'
 tagged = './genres/bextract_single.mf'
 audio_with_tag = {}
 audio_loader  = AudioLoader(rootdir)
-paths = audio_loader.get_audio_files()
+paths = audio_loader.get_audio_filepaths()
 results = []
 zcr = ZeroCrossingRate()
 loudness = Loudness()
@@ -34,6 +34,7 @@ for path in paths:
             sct(audio),
             energy(audio),
             rms(audio),
+            file_basename,
             audio_with_tag[file_basename]
         ]
     )
