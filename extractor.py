@@ -4,7 +4,7 @@ import csv
 import os
 
 rootdir = './genres'
-tagged = './genres/bextract_single.mf'
+tagged = './genres/input.mf'
 audio_with_tag = {}
 audio_loader  = AudioLoader(rootdir)
 paths = audio_loader.get_audio_filepaths()
