@@ -1,7 +1,8 @@
-from essentia.standard import MonoLoader, ZeroCrossingRate,Loudness, SpectralCentroidTime, Energy, RMS, MelBands, Spectrum, Windowing
+from essentia.standard import MonoLoader, ZeroCrossingRate,Loudness, SpectralCentroidTime, Energy, RMS, MFCC, Spectrum, Windowing
 from audio_loader import AudioLoader
 import csv
 import os
+import sys
 
 rootdir = './genres'
 tagged = './genres/input.mf'
@@ -16,7 +17,7 @@ energy = Energy()
 rms = RMS()
 spectrum = Spectrum()
 w = Windowing(type='hann')
-melband = MelBands(numberBands=10)
+mfcc = MFCC(numberBands=40, dctType=3, inputSize=4096)
 
 with open(tagged) as file:
     for line in file:
@@ -30,7 +31,8 @@ for path in paths:
     file_basename = os.path.basename(path)
     frame = audio[2*44100 : 2*44100 + 8192]
     mX = spectrum(w(frame))
-    
+    bands, m = mfcc(mX)
+        
     list1 = [zcr(audio), 
             loudness(audio),
             sct(audio),
@@ -38,7 +40,7 @@ for path in paths:
             rms(audio)
             ]
     list_file = [file_basename, audio_with_tag[file_basename]]
-    results.append([*list1 , *melband(mX), *list_file])
+    results.append([*list1 , *m, *list_file])
 
 with open('data_genres_features.csv', 'w', newline='') as f:
     writer = csv.writer(f)
