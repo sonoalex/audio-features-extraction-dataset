@@ -17,7 +17,7 @@ energy = Energy()
 rms = RMS()
 spectrum = Spectrum()
 w = Windowing(type='hann')
-mfcc = MFCC(numberBands=40, dctType=3, inputSize=4096)
+mfcc = MFCC(inputSize=4096)
 
 with open(tagged) as file:
     for line in file:
@@ -32,7 +32,6 @@ for path in paths:
     frame = audio[2*44100 : 2*44100 + 8192]
     mX = spectrum(w(frame))
     bands, m = mfcc(mX)
-        
     list1 = [zcr(audio), 
             loudness(audio),
             sct(audio),
